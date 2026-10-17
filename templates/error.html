@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Something went wrong · Pennywise{% endblock %}
+
+{% block content %}
+    <section class="empty-state error-page">
+        <span>!</span>
+        <h1>Something went wrong</h1>
+        <p>{{ message }}</p>
+        <a class="btn" href="{{ url_for('dashboard') }}">Back to dashboard</a>
+    </section>
+{% endblock %}

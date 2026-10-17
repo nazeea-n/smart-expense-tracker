@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Reports · Pennywise{% endblock %}
+
+{% block content %}
+    <section class="page-heading">
+        <span class="eyebrow">THE BIGGER PICTURE</span>
+        <h1>Expense reports</h1>
+        <p>Choose a date range and review your spending in one place.</p>
+    </section>
+
+    <section class="panel">
+        <form method="get" class="filter-row report-filters">
+            <label>
+                From
+                <input type="date" name="start" value="{{ start }}" required>
+            </label>
+
+            <label>
+                To
+                <input type="date" name="end" value="{{ end }}" required>
+            </label>
+
+            <button class="btn btn-small" type="submit">Generate report</button>
+            <button class="btn btn-small btn-quiet" type="button" onclick="downloadTableCSV('report-table', 'expense-report.csv')">Download CSV ↓</button>
+        </form>
+
+        <div class="report-total">
+            <span>Total for selected period</span>
+            <strong>{{ total|inr }}</strong>
+            <span>{{ rows|length }} transaction{{ '' if rows|length == 1 else 's' }}</span>
+        </div>
+
+        {% if rows %}
+            <div class="table-scroll">
+                <table id="report-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Expense</th>
+                            <th>Category</th>
+                            <th>Notes</th>
+                            <th class="align-right">Amount (INR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in rows %}
+                            <tr>
+                                <td>{{ r.expense_date.strftime('%d %b %Y') }}</td>
+                                <td><strong>{{ r.title }}</strong></td>
+                                <td>{{ r.category }}</td>
+                                <td>{{ r.notes or '—' }}</td>
+                                <td class="align-right amount-cell">{{ r.amount }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span>▤</span>
+                <strong>No transactions in this period</strong>
+                <p>Try a different date range or add an expense.</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

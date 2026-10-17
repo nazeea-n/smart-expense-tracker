@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Create account · Pennywise{% endblock %}
+
+{% block content %}
+    <section class="auth-layout">
+        <div class="auth-aside">
+            <span class="eyebrow">A FRESH START</span>
+            <h1>Know where every rupee goes.</h1>
+            <p>Build a clearer picture of your spending, one entry at a time.</p>
+            <div class="auth-decoration">✳</div>
+        </div>
+
+        <div class="auth-card">
+            <span class="eyebrow">GET STARTED</span>
+            <h2>Create your account</h2>
+            <p class="subtext">It's your money story. Start writing it.</p>
+
+            <form method="post" class="form-stack">
+                <label>
+                    Your name
+                    <input type="text" name="name" required maxlength="100" autocomplete="name" placeholder="Your full name">
+                </label>
+
+                <label>
+                    Email address
+                    <input type="email" name="email" required autocomplete="email" placeholder="you@example.com">
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" name="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters">
+                    <small>Use at least 8 characters.</small>
+                </label>
+
+                <button class="btn btn-full" type="submit">Create account <span>→</span></button>
+            </form>
+
+            <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+        </div>
+    </section>
+{% endblock %}

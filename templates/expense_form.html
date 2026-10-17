@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} · Pennywise{% endblock %}
+
+{% block content %}
+    <section class="page-heading">
+        <span class="eyebrow">KEEP YOUR RECORDS CLEAR</span>
+        <h1>{{ page_title }}</h1>
+        <p>Capture the details now; future you will thank you.</p>
+    </section>
+
+    <section class="panel form-panel">
+        <form method="post" class="form-stack">
+            <label>
+                Expense title
+                <input type="text" name="title" required maxlength="150" value="{{ expense.title if expense else '' }}" placeholder="e.g. Lunch with friends">
+            </label>
+
+            <div class="form-two">
+                <label>
+                    Amount (₹)
+                    <input type="number" name="amount" min="0.01" step="0.01" required value="{{ expense.amount if expense else '' }}" placeholder="0.00">
+                </label>
+
+                <label>
+                    Category
+                    <select name="category" required>
+                        {% for c in categories %}
+                            <option value="{{ c }}" {% if expense and expense.category == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            <label>
+                Date
+                <input type="date" name="expense_date" required value="{{ expense.expense_date.isoformat() if expense else today }}">
+            </label>
+
+            <label>
+                <span>Notes <span class="optional">(optional)</span></span>
+                <textarea name="notes" rows="3" placeholder="Add a note if you like...">{{ expense.notes if expense and expense.notes else '' }}</textarea>
+            </label>
+
+            <div class="form-actions">
+                <a class="btn btn-quiet" href="{{ url_for('expenses') }}">Cancel</a>
+                <button class="btn" type="submit">Save expense <span>→</span></button>
+            </div>
+        </form>
+    </section>
+{% endblock %}

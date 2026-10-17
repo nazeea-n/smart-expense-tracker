@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Log in · Pennywise{% endblock %}
+
+{% block content %}
+    <section class="auth-layout">
+        <div class="auth-aside">
+            <span class="eyebrow">WELCOME BACK</span>
+            <h1>Your financial clarity starts here.</h1>
+            <p>Pick up where you left off and keep your money goals in sight.</p>
+            <div class="auth-decoration">₹</div>
+        </div>
+
+        <div class="auth-card">
+            <span class="eyebrow">YOUR ACCOUNT</span>
+            <h2>Log in</h2>
+            <p class="subtext">Good to see you again.</p>
+
+            <form method="post" class="form-stack">
+                <label>
+                    Email address
+                    <input type="email" name="email" required autocomplete="email" placeholder="you@example.com">
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" name="password" required autocomplete="current-password" placeholder="Your password">
+                </label>
+
+                <a class="forgot-link" href="{{ url_for('forgot_password') }}">Forgot password?</a>
+
+                <button class="btn btn-full" type="submit">Log in <span>→</span></button>
+            </form>
+
+            <p class="auth-switch">New to Pennywise? <a href="{{ url_for('register') }}">Create an account</a></p>
+        </div>
+    </section>
+{% endblock %}

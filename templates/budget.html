@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Budget · Pennywise{% endblock %}
+
+{% block content %}
+    <section class="page-heading">
+        <span class="eyebrow">A PLAN THAT FITS YOUR LIFE</span>
+        <h1>Your monthly budget</h1>
+        <p>Give your spending a gentle boundary, not a restriction.</p>
+    </section>
+
+    <section class="budget-layout">
+        <article class="panel budget-main">
+            <span class="panel-tag">{{ month_label|upper }}</span>
+            <h2>Set your spending limit</h2>
+            <p class="subtext">Choose an amount you feel comfortable spending this month.</p>
+
+            <form method="post" class="budget-form">
+                <label>
+                    Monthly budget (₹)
+                    <input type="number" name="amount" min="0" step="0.01" required value="{{ budget }}">
+                </label>
+                <button class="btn" type="submit">Save budget →</button>
+            </form>
+        </article>
+
+        <article class="panel budget-summary">
+            <span class="eyebrow">YOUR PROGRESS</span>
+            <div class="budget-big">{{ spent|inr }}</div>
+            <p>spent out of {{ budget|inr }}</p>
+
+            <div class="progress progress-large">
+                <span style="width: {{ percentage }}%"></span>
+            </div>
+
+            <div class="budget-progress-label">
+                <span>{{ percentage|round|int }}% used</span>
+                <span>{{ remaining|inr }} {% if remaining >= 0 %}left{% else %}over budget{% endif %}</span>
+            </div>
+
+            {% if budget|float > 0 and spent|float > budget|float %}
+                <p class="budget-alert">You've gone over your budget. Review your expenses and adjust your plan if needed.</p>
+            {% elif budget|float > 0 %}
+                <p class="budget-calm">You're keeping track. Keep going, one choice at a time.</p>
+            {% else %}
+                <p class="budget-calm">Set your monthly budget to start tracking progress.</p>
+            {% endif %}
+        </article>
+    </section>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard · Pennywise{% endblock %}
+
+{% block content %}
+    <section class="page-heading heading-row">
+        <div>
+            <span class="eyebrow">YOUR OVERVIEW · {{ month_label|upper }}</span>
+            <h1>Hey, {{ session.get('user_name', 'there').split(' ')[0] }} <span class="wave">✳</span></h1>
+            <p>Here's how your money is moving this month.</p>
+        </div>
+        <a class="btn" href="{{ url_for('add_expense') }}">＋ Add expense</a>
+    </section>
+
+    <section class="stats-grid">
+        <article class="stat-card stat-primary">
+            <div class="stat-top">
+                <span>Total spent this month</span>
+                <span class="stat-icon">↗</span>
+            </div>
+            <div class="stat-number">{{ total|inr }}</div>
+            <div class="stat-note">Across {{ count }} transaction{{ '' if count == 1 else 's' }}</div>
+            <div class="stat-decoration">₹</div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-top">
+                <span>Monthly budget</span>
+                <span class="stat-icon icon-lime">◎</span>
+            </div>
+            <div class="stat-number">{{ budget|inr }}</div>
+            <div class="stat-note">
+                <a href="{{ url_for('budget') }}">Manage your budget →</a>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-top">
+                <span>Budget remaining</span>
+                <span class="stat-icon icon-peach">◷</span>
+            </div>
+            <div class="stat-number">{{ remaining|inr }}</div>
+            <div class="stat-note">
+                {% if budget|float > 0 %}
+                    {{ ((total|float / budget|float) * 100)|round|int }}% of budget used
+                {% else %}
+                    Set a budget to track progress
+                {% endif %}
+            </div>
+        </article>
+    </section>
+
+    <section class="dashboard-grid">
+        <article class="panel chart-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Spending overview</h2>
+                    <p>Your daily spending this month</p>
+                </div>
+                <span class="panel-tag">DAILY</span>
+            </div>
+
+            <div class="chart-area">
+                <canvas id="dailyChart"></canvas>
+            </div>
+            <script type="application/json" id="daily-data">{{ {'labels': daily_labels, 'values': daily_values}|tojson }}</script>
+        </article>
+
+        <article class="panel chart-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Where it goes</h2>
+                    <p>Spending by category</p>
+                </div>
+            </div>
+
+            {% if categories %}
+                <div class="donut-area">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <script type="application/json" id="category-data">{{ {'labels': category_labels, 'values': category_values}|tojson }}</script>
+
+                <div class="category-legend">
+                    {% for row in categories[:4] %}
+                        <div>
+                            <span class="legend-dot dot-{{ loop.index }}"></span>
+                            <span>{{ row.category }}</span>
+                            <strong>{{ row.total|inr }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state small-empty">
+                    <span>◌</span>
+                    <strong>Your categories will appear here</strong>
+                    <p>Add an expense to see your spending breakdown.</p>
+                </div>
+            {% endif %}
+        </article>
+    </section>
+
+    <section class="panel recent-panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Recent expenses</h2>
+                <p>Your latest money moves</p>
+            </div>
+            <a class="text-link" href="{{ url_for('expenses') }}">View all →</a>
+        </div>
+
+        {% if recent %}
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Expense</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th class="align-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in recent %}
+                            <tr>
+                                <td><span class="expense-symbol symbol-{{ loop.index }}">{{ e.category[:1] }}</span><strong>{{ e.title }}</strong></td>
+                                <td><span class="category-chip">{{ e.category }}</span></td>
+                                <td>{{ e.expense_date.strftime('%d %b %Y') }}</td>
+                                <td class="align-right amount-cell">{{ e.amount|inr }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span>＋</span>
+                <strong>No expenses yet</strong>
+                <p>Add your first expense to get your dashboard going.</p>
+                <a class="btn btn-small" href="{{ url_for('add_expense') }}">Add your first expense</a>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
