@@ -197,7 +197,7 @@ Smart_Expense_Tracker/
 ### Report
 
 
-![Report](07-report.png)
+![Report](07-reports.png)
 
 
 
