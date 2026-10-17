@@ -84,7 +84,7 @@ FLASK_DEBUG=true
 Do not share or commit `.env`; it contains local credentials.
 
 ### 6. (Optional) Set up email for "Forgot password"
-
+``
 The reset link is sent by email. With Gmail:
 
 1. Turn on **2-Step Verification** in your Google account.
@@ -149,3 +149,52 @@ Smart_Expense_Tracker/
 
 - Chart.js is loaded from a CDN, so the charts require an internet connection in the browser.
 - This is an academic starter project. Before public deployment, disable debug mode, use a production WSGI server, set a strong secret key, configure HTTPS and add deployment-specific security hardening.
+
+## Screenshots
+
+### Landing page
+
+
+![Landing page](01-landing.png)
+
+
+
+### Register
+
+
+![Register](02-register.png)
+
+
+
+### Login
+
+
+![Login](03-login.png)
+
+
+
+### Dashboard
+
+
+![Dashboard](04-dashboard.png)
+
+
+
+### Expenses
+
+
+![Expenses](05-expenses.png)
+
+
+
+### Budget
+
+
+![Budget](06-budget.png)
+
+
+
+### Report
+
+
+![Report](07-report.png)
